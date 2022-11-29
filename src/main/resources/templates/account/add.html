@@ -117,6 +117,15 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label for="value" class="col-sm-2 col-form-label">Валюта</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="dropDownList" th:field="*{currency}">
+                                <option th:each="currency : ${currencies}" th:value="${currency}"
+                                        th:text="${currency}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <div class="col-sm-10">
                             <button type="submit" class="btn btn-primary">Добавить</button>
                         </div>

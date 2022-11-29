@@ -2,7 +2,9 @@ package com.jokindy.finapp.operation;
 
 import com.jokindy.finapp.account.Account;
 import com.jokindy.finapp.account.AccountService;
+import com.jokindy.finapp.currency.Currency;
 import com.jokindy.finapp.exception.BalanceIsNegativeException;
+import com.jokindy.finapp.operation.dto.OperationDto;
 import com.jokindy.finapp.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,6 +36,7 @@ public class OperationController {
         List<Account> accountList = accountService.getAccounts(userId);
         if (!accountList.isEmpty()) {
             model.addAttribute("accounts", accountList);
+            model.addAttribute("currencies", Currency.values());
             return "operation/add";
         } else {
             model.addAttribute("message", "У вас еще нет счетов для списания средств");

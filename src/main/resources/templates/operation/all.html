@@ -95,18 +95,20 @@
                 <table class="table table-striped" style="width:80%">
                     <thead>
                     <tr>
-                        <th scope="col">#</th>
                         <th scope="col">Дата</th>
                         <th scope="col">Описание</th>
                         <th scope="col">Сумма</th>
+                        <th scope="col">Валюта</th>
+                        <th scope="col">Аккаунт</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="operation: ${operations}">
-                        <td th:text="${operation.getId()}"></td>
                         <td th:text="${operation.getCreated()}"></td>
                         <td th:text="${operation.description}"></td>
                         <td th:text="${operation.value}"></td>
+                        <td th:text="${operation.currency}"></td>
+                        <td th:text="${operation.getAccount().getDescription()}"></td>
                     </tr>
                     </tbody>
                 </table>

@@ -38,4 +38,3 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
         }
     }
 }
-

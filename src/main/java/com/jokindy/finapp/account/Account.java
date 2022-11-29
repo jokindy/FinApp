@@ -1,5 +1,6 @@
 package com.jokindy.finapp.account;
 
+import com.jokindy.finapp.currency.Currency;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,4 +25,7 @@ public class Account {
 
     @Column(name = "user_id")
     private Long userId;
+
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
 }

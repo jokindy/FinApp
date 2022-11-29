@@ -1,13 +1,15 @@
 package com.jokindy.finapp.operation;
 
-import com.jokindy.finapp.account.AccountRepository;
-import com.jokindy.finapp.exception.BalanceIsNegativeException;
+import com.jokindy.finapp.account.AccountService;
+import com.jokindy.finapp.operation.dto.OperationDto;
+import com.jokindy.finapp.operation.dto.OperationShortDto;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.jokindy.finapp.operation.OperationType.EXPENSE;
 
@@ -16,7 +18,7 @@ import static com.jokindy.finapp.operation.OperationType.EXPENSE;
 @Transactional
 public class OperationService {
 
-    private final AccountRepository accountRepository;
+    private final AccountService accountService;
     private final OperationRepository operationRepository;
     private final ModelMapper modelMapper;
 
@@ -27,20 +29,13 @@ public class OperationService {
         }
         operation.setUserId(userId);
         operationRepository.save(operation);
-        handleOperation(operation);
+        accountService.handleOperation(operation);
     }
 
-    public List<Operation> getAll(long userId) {
-        return operationRepository.findAllByUserIdOrderByCreatedDesc(userId);
-    }
-
-    private void handleOperation(Operation operation) {
-        long accountId = operation.getAccountId();
-        double balance = accountRepository.findBalanceById(accountId);
-        balance = balance + operation.getValue();
-        if (balance < 0) {
-            throw new BalanceIsNegativeException();
-        }
-        accountRepository.updateBalanceById(balance, accountId);
+    public List<OperationShortDto> getAll(long userId) {
+        List<Operation> operations = operationRepository.findAllByUserIdOrderByCreatedDesc(userId);
+        return operations.stream()
+                .map(p -> modelMapper.map(p, OperationShortDto.class))
+                .collect(Collectors.toList());
     }
 }

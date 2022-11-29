@@ -1,5 +1,7 @@
 package com.jokindy.finapp.account;
 
+import com.jokindy.finapp.account.dto.AccountDto;
+import com.jokindy.finapp.currency.Currency;
 import com.jokindy.finapp.exception.NotEnoughMoneyException;
 import com.jokindy.finapp.user.UserRepository;
 import lombok.AllArgsConstructor;
@@ -8,7 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -24,6 +29,7 @@ public class AccountController {
     @GetMapping("add")
     public String addAccount(Model model) {
         model.addAttribute("account", new AccountDto());
+        model.addAttribute("currencies", Currency.values());
         return "account/add";
     }
 
@@ -88,7 +94,7 @@ public class AccountController {
         model.addAttribute("header", "Ваши счета:");
         model.addAttribute("accounts", accountService.getAccounts(userId));
         double balance = accountService.getBalance(userId);
-        model.addAttribute("total_balance", "Ваш баланс: " + balance);
+        model.addAttribute("total_balance", "Ваш баланс: " + balance + " USD");
         return "account/info";
     }
 
